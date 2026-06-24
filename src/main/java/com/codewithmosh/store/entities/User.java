@@ -55,6 +55,10 @@ public class User {
     )
     private Set<Product> favoriteProducts = new HashSet<>();
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
+
     public void addFavoriteProduct(Product product) {
         favoriteProducts.add(product);
     }
