@@ -27,6 +27,33 @@ public class StripePaymentGateway implements PaymentGateway {
     private String webhookSecretKey;
 
     @Override
+    public CheckoutSession createCheckoutSession(Order order) {
+        try {
+            SessionCreateParams.Builder builder = SessionCreateParams.builder()
+                    .setMode(SessionCreateParams.Mode.PAYMENT)
+                    .setSuccessUrl(websiteUrl + "/checkout-success" + order.getId())
+                    .setCancelUrl(websiteUrl + "/checkout-cancel")
+                    .setPaymentIntentData(createPaymentIntent(order));
+
+            order.getItems().forEach(item -> {
+                SessionCreateParams.LineItem lineItem = createLineItem(item);
+                builder.addLineItem(lineItem);
+            });
+
+            Session session = Session.create(builder.build());
+            return new CheckoutSession(session.getUrl());
+        } catch (StripeException e) {
+            throw new PaymentException();
+        }
+    }
+
+    private static SessionCreateParams.PaymentIntentData createPaymentIntent(Order order) {
+        return SessionCreateParams.PaymentIntentData.builder()
+                .putMetadata("order_id", order.getId().toString())
+                .build();
+    }
+
+    @Override
     public Optional<PaymentResult> parseWebhookRequest(WebhookRequest request) {
         try {
             String payload = request.getPayload();
@@ -54,27 +81,6 @@ public class StripePaymentGateway implements PaymentGateway {
         );
         PaymentIntent paymentIntent = (PaymentIntent) stripeObject;
         return Long.valueOf(paymentIntent.getMetadata().get("order_id"));
-    }
-
-    @Override
-    public CheckoutSession createCheckoutSession(Order order) {
-        try {
-            SessionCreateParams.Builder builder = SessionCreateParams.builder()
-                    .setMode(SessionCreateParams.Mode.PAYMENT)
-                    .setSuccessUrl(websiteUrl + "/checkout-success" + order.getId())
-                    .setCancelUrl(websiteUrl + "/checkout-cancel")
-                    .putMetadata("orderId", order.getId().toString());
-
-            order.getItems().forEach(item -> {
-                SessionCreateParams.LineItem lineItem = createLineItem(item);
-                builder.addLineItem(lineItem);
-            });
-
-            Session session = Session.create(builder.build());
-            return new CheckoutSession(session.getUrl());
-        } catch (StripeException e) {
-            throw new PaymentException();
-        }
     }
 
     private SessionCreateParams.LineItem createLineItem(OrderItem item) {
