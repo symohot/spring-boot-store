@@ -1,0 +1,32 @@
+INSERT INTO categories (name)
+VALUES ('Mobile Phones'),
+       ('Laptops'),
+       ('Home Appliances'),
+       ('Clothing'),
+       ('Books'),
+       ('Sports & Travel');
+
+INSERT INTO products (name, price, description, category_id)
+VALUES ('Samsung Galaxy A55', 18500000.00,
+        'A mid-range Samsung smartphone with a Super AMOLED display, reliable performance, and a high-quality camera for daily use.',
+        1),
+       ('iPhone 13', 42500000.00,
+        'Apple iPhone 13 with fast performance, a powerful camera system, and a durable modern design.', 1),
+       ('Lenovo IdeaPad 3', 28500000.00,
+        'A practical laptop suitable for students, office work, and daily tasks with efficient performance and a lightweight design.',
+        2),
+       ('Asus TUF Gaming F15', 62500000.00,
+        'A gaming laptop with strong graphics performance, a high-refresh-rate display, and an efficient cooling system.',
+        2),
+       ('Bosch ProPower Vacuum Cleaner', 9500000.00,
+        'A powerful Bosch vacuum cleaner with strong suction, hygienic filtration, and a home-friendly design.', 3),
+       ('LG NeoChef Microwave Oven', 14500000.00,
+        'An LG microwave oven for heating, defrosting, and quick cooking with efficient energy usage.', 3),
+       ('Men Winter Jacket', 2200000.00,
+        'A warm men winter jacket suitable for cold weather, featuring a sporty design and practical pockets.', 4),
+       ('The Compound Effect', 350000.00,
+        'A personal development book by Darren Hardy about how small daily habits create long-term success.', 5),
+       ('Nike Running Shoes', 4800000.00,
+        'Lightweight running shoes designed for walking and running, with a soft sole and comfortable fit.', 6),
+       ('40L Travel Backpack', 1750000.00,
+        'A durable 40-liter backpack suitable for travel, hiking, and daily use with enough storage space.', 6);
