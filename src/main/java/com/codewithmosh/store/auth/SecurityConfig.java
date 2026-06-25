@@ -4,6 +4,7 @@ import com.codewithmosh.store.common.SecurityRoles;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -62,6 +63,9 @@ public class SecurityConfig {
                             }*/
                     featureSecurityRoles.forEach(role -> role.configure(c));
                             c.anyRequest().authenticated();
+                    featureSecurityRoles.forEach(role ->
+                            System.out.println("Security role loaded: " + role.getClass().getName())
+                    );
                         }
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
@@ -70,6 +74,7 @@ public class SecurityConfig {
                             new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
                     c.accessDeniedHandler((request, response, accessDeniedException) ->
                             response.setStatus(HttpStatus.FORBIDDEN.value()));
+
                 });
         return http.build();
     }
