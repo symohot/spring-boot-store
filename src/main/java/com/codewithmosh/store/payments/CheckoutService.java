@@ -55,7 +55,7 @@ public class CheckoutService {
                     Order order = orderRepository.findById(paymentResult.getOrderId()).orElseThrow(OrderNotFoundException::new);
                     order.setStatus(paymentResult.getPaymentStatus());
                     orderRepository.save(order);
+                    System.out.println(order.getId()+" "+ order.getStatus());
                 });
-        Optional<PaymentResult> paymentResult = stripePaymentGateway.parseWebhookRequest(request);
     }
 }

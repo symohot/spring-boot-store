@@ -60,7 +60,7 @@ public class StripePaymentGateway implements PaymentGateway {
             String signature = request.getHeaders().get("stripe-signature");
 
             Event event = Webhook.constructEvent(payload, signature, webhookSecretKey);
-
+            System.out.println(event.getType());
             return switch (event.getType()) {
                 case "payment_intent.succeeded" ->
                         Optional.of(new PaymentResult(extractOrderId(event), PaymentStatus.PAID));
